@@ -1,8 +1,10 @@
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ExternalLink, Github } from 'lucide-react'
+import { useState } from 'react'
 
 export default function Projects() {
+  const [showAll, setShowAll] = useState(false)
   const projects = [
     {
       title: 'AI-Powered Dashboard',
@@ -54,7 +56,7 @@ export default function Projects() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Featured <span className="text-primary glow">Projects</span>
+              Featured <span className="text-glow">Projects</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               A collection of projects that showcase my skills and passion for creating 
@@ -63,7 +65,7 @@ export default function Projects() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+            {(showAll ? projects : projects.slice(0, 4)).map((project, index) => (
               <Card key={index} className="glass-strong border-0 group overflow-hidden hover:glow transition-all duration-500">
                 <div className="relative overflow-hidden">
                   <img 
@@ -106,8 +108,13 @@ export default function Projects() {
           </div>
 
           <div className="text-center mt-12">
-            <Button variant="outline" size="lg" className="glass-strong glow">
-              View All Projects
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="glass-strong glow"
+              onClick={() => setShowAll(!showAll)}
+            >
+              {showAll ? 'Show Less' : 'View All Projects'}
             </Button>
           </div>
         </div>

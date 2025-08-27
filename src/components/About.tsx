@@ -31,7 +31,7 @@ export default function About() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              About <span className="text-primary glow">Me</span>
+              About <span className="text-primary" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e' }}>Me</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               I'm a passionate full-stack developer with a keen eye for design and a love for creating 

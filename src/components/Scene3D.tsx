@@ -1,66 +1,86 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Sphere, MeshDistortMaterial, Float } from '@react-three/drei'
-import { useRef } from 'react'
+import { OrbitControls } from '@react-three/drei'
+import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
-function AnimatedSphere({ position, color, scale = 1 }: { position: [number, number, number], color: string, scale?: number }) {
-  const meshRef = useRef<THREE.Mesh>(null!)
-  
+function Stars() {
+  const pointsRef = useRef<THREE.Points>(null!)
+  const starCount = 4000
+
+  // Memoize star positions and colors
+  const { positions, colors } = useMemo(() => {
+    const positions = new Float32Array(starCount * 3)
+    const colors = new Float32Array(starCount * 3)
+    for (let i = 0; i < starCount; i++) {
+      // Spread stars in a sphere
+      const r = 80 + Math.random() * 40
+      const theta = Math.random() * 2 * Math.PI
+      const phi = Math.acos(2 * Math.random() - 1)
+      positions[i * 3] = r * Math.sin(phi) * Math.cos(theta)
+      positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
+      positions[i * 3 + 2] = r * Math.cos(phi)
+      // Star color: mostly white, some blue/yellow
+      const color = new THREE.Color()
+      if (Math.random() < 0.7) {
+        color.setHSL(0.6 + Math.random() * 0.1, 0.1, 0.9 + Math.random() * 0.1)
+      } else if (Math.random() < 0.85) {
+        color.setHSL(0.1 + Math.random() * 0.1, 0.3, 0.8)
+      } else {
+        color.setHSL(0.15, 0.1, 1)
+      }
+      colors[i * 3] = color.r
+      colors[i * 3 + 1] = color.g
+      colors[i * 3 + 2] = color.b
+    }
+    return { positions, colors }
+  }, [])
+
   useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.01
     }
   })
 
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere ref={meshRef} args={[1 * scale, 100, 200]} position={position}>
-        <MeshDistortMaterial
-          color={color}
-          attach="material"
-          distort={0.3}
-          speed={2}
-          roughness={0.1}
-          metalness={0.8}
-          emissive={color}
-          emissiveIntensity={0.1}
-        />
-      </Sphere>
-    </Float>
-  )
-}
-
-function Particles() {
-  const particlesRef = useRef<THREE.Points>(null!)
-  
-  useFrame((state) => {
-    if (particlesRef.current) {
-      particlesRef.current.rotation.x = state.clock.elapsedTime * 0.05
-      particlesRef.current.rotation.y = state.clock.elapsedTime * 0.075
-    }
-  })
-
-  const particlesPosition = new Float32Array(2000 * 3)
-  for (let i = 0; i < 2000; i++) {
-    particlesPosition[i * 3] = (Math.random() - 0.5) * 100
-    particlesPosition[i * 3 + 1] = (Math.random() - 0.5) * 100
-    particlesPosition[i * 3 + 2] = (Math.random() - 0.5) * 100
-  }
-
-  return (
-    <points ref={particlesRef}>
+    <points ref={pointsRef}>
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={2000}
-          array={particlesPosition}
+          count={starCount}
+          array={positions}
+          itemSize={3}
+        />
+        <bufferAttribute
+          attach="attributes-color"
+          count={starCount}
+          array={colors}
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.1} color="#22c55e" transparent opacity={0.6} />
+      <pointsMaterial
+        size={0.25}
+        vertexColors
+        transparent
+        opacity={0.85}
+        sizeAttenuation
+      />
     </points>
+  )
+}
+
+function Nebula() {
+  // A large, faint, colored sphere for a nebula effect
+  return (
+    <mesh>
+      <sphereGeometry args={[40, 64, 64]} />
+      <meshBasicMaterial
+        color="#6d28d9"
+        transparent
+        opacity={0.08}
+        side={THREE.BackSide}
+      />
+    </mesh>
   )
 }
 
@@ -68,28 +88,22 @@ export default function Scene3D() {
   return (
     <div className="fixed inset-0 -z-10">
       <Canvas
-        camera={{ position: [0, 0, 20], fov: 60 }}
-        gl={{ alpha: true, antialias: true }}
+        camera={{ position: [0, 0, 60], fov: 65 }}
+        gl={{ alpha: false, antialias: true }}
+        style={{ background: 'radial-gradient(ellipse at center, #0f172a 0%, #020617 100%)' }}
       >
-        <ambientLight intensity={0.2} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#22c55e" />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#8b5cf6" />
-        
-        <AnimatedSphere position={[-8, 4, -10]} color="#22c55e" scale={1.5} />
-        <AnimatedSphere position={[8, -4, -15]} color="#8b5cf6" scale={1.2} />
-        <AnimatedSphere position={[0, 8, -20]} color="#06b6d4" scale={0.8} />
-        <AnimatedSphere position={[-12, -8, -25]} color="#f59e0b" scale={1} />
-        
-        <Particles />
-        
+        <ambientLight intensity={0.1} />
+        <pointLight position={[0, 0, 0]} intensity={0.3} color="#fff" />
+        <Nebula />
+        <Stars />
         <OrbitControls
           enableZoom={false}
           enablePan={false}
           enableRotate={true}
           autoRotate
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 2}
+          autoRotateSpeed={0.15}
+          maxPolarAngle={Math.PI}
+          minPolarAngle={0}
         />
       </Canvas>
     </div>

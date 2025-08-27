@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
+import Typewriter from 'typewriter-effect';
 
 export default function Hero() {
   return (
@@ -10,46 +11,77 @@ export default function Hero() {
             👋 Welcome to my portfolio
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Creative Developer
-          </h1>
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-primary via-blue-400 to-purple-500 bg-clip-text text-transparent">
+            <Typewriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString('AI Developer')
+                  .pauseFor(1200)
+                  .deleteAll(60)
+                  .typeString('ML Engineer')
+                  .pauseFor(1200)
+                  .deleteAll(60)
+                  .typeString('Agentic AI Enthusiast')
+                  .pauseFor(1200)
+                  .deleteAll(60)
+                  .typeString('Backend developer')
+                  .pauseFor(1200)
+                  .deleteAll(60)
+                  .start();
+              }}
+              options={{
+                loop: true,
+                cursor: '_',
+                delay: 90,
+                deleteSpeed: 60,
+              }}
+            />
+            </h1>
           
-          <h2 className="text-2xl md:text-4xl mb-8 text-muted-foreground">
-            Building digital experiences with{' '}
-            <span className="text-primary glow">passion</span> and{' '}
-            <span className="text-purple-400">precision</span>
-          </h2>
+            <h2 className="text-2xl md:text-4xl mb-8 text-muted-foreground">
+            Empowering the future with{' '}
+            <span className="text-primary" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e'}}>AI</span>,{' '}
+            <span className="text-blue-400" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e'}}>Machine Learning</span>, and{' '}
+            <span className="text-purp;e-400" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e'}}>Agentic AI</span> solutions
+            </h2>
           
-          <p className="text-lg md:text-xl mb-12 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            I craft modern web applications that combine beautiful design with 
-            cutting-edge technology. Let's build something amazing together.
-          </p>
+            <p className="text-lg md:text-xl mb-12 text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            I build intelligent, scalable applications that blend innovative AI with robust engineering. Let’s create impactful solutions together.
+            </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
             <Button size="lg" className="glow-strong group">
               View My Work
               <ArrowDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </Button>
-            <Button variant="outline" size="lg" className="glass-strong">
+            <a
+              href="/src/components/Sudharma_CV.pdf"
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="glass-strong"
+            >
+              <Button variant="outline" size="lg" className="w-full">
               Download CV
-            </Button>
+              </Button>
+            </a>
           </div>
           
           <div className="flex justify-center space-x-6">
             <a
-              href="#"
+              href="https://github.com/Sudharmas"
               className="p-3 glass-strong rounded-full hover:glow transition-all duration-300 group"
             >
               <Github className="h-6 w-6 group-hover:scale-110 transition-transform" />
             </a>
             <a
-              href="#"
+              href="https://linkedin.com/in/sudharmas3110"
               className="p-3 glass-strong rounded-full hover:glow transition-all duration-300 group"
             >
               <Linkedin className="h-6 w-6 group-hover:scale-110 transition-transform" />
             </a>
             <a
-              href="#"
+              href="mailto:sudharma@sudharma-s.in.net"
               className="p-3 glass-strong rounded-full hover:glow transition-all duration-300 group"
             >
               <Mail className="h-6 w-6 group-hover:scale-110 transition-transform" />

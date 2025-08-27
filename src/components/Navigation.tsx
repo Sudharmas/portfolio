@@ -28,9 +28,19 @@ export default function Navigation() {
     }`}>
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold text-primary glow">
-            Portfolio
-          </div>
+            <div
+            className="text-3xl font-extrabold tracking-tight flex items-center select-none"
+            style={{
+              fontSize: '4.5em',
+              textShadow: '0 0 20px #440c72ff, 0 0 70px #7e4ef0ff, 0 2px 8px #0008',
+              letterSpacing: '0.08em',
+              color: '#ffffffff',
+              fontFamily: "Orbitron",
+              WebkitTextStroke: '1px #997cffff',
+            }}
+            >
+            <span className="mr-2">S</span>
+            </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">

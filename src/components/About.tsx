@@ -34,26 +34,24 @@ export default function About() {
               About <span className="text-primary" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e' }}>Me</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              I'm a passionate full-stack developer with a keen eye for design and a love for creating 
-              exceptional digital experiences. With expertise in modern web technologies, I bridge the 
-              gap between design and functionality.
+              I'm an enthusiastic AI/ML engineer and Agentic AI developer, dedicated to building intelligent systems that learn, adapt, and collaborate. With expertise in modern machine learning, deep learning, and agent-based architectures, I bridge the gap between innovative research and real-world applications.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             <div>
               <h3 className="text-2xl font-bold mb-6 text-primary">My Journey</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                Started as a curious developer exploring the endless possibilities of web technologies. 
-                Over the years, I've honed my skills in both frontend and backend development, always 
-                staying current with the latest trends and best practices.
-              </p>
+                <p className="text-muted-foreground mb-6 leading-relaxed">
+                  My journey began with a fascination for artificial intelligence and machine learning. 
+                  Over the years, I have specialized in developing intelligent systems, from building deep learning models to deploying scalable AI solutions. 
+                  My experience spans research, prototyping, and productionizing ML pipelines, always staying at the forefront of AI advancements and best practices.
+                </p>
               <p className="text-muted-foreground mb-6 leading-relaxed">
                 My approach combines technical expertise with creative problem-solving, ensuring that 
                 every project not only functions flawlessly but also provides an outstanding user experience.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['React', 'TypeScript', 'Node.js', 'Python', 'Three.js', 'Tailwind'].map((tech) => (
+                {['AI', 'Tensorflow', 'Pytorch', 'Python', 'RAG', 'MongoDB','ChromaDB','Langchain','Langgraph','google ADK','Vertex AI','Micrpspft Azure','Databricks','GenAI',''].map((tech) => (
                   <span key={tech} className="px-3 py-1 glass rounded-full text-sm text-primary">
                     {tech}
                   </span>

@@ -42,48 +42,76 @@ const skills = [
 function getRandom(min: number, max: number) {
   return Math.random() * (max - min) + min
 }
+// Predefined positions and animation settings for each skill icon
+const skillPositions = [
+    { top: 15, left: 10, duration: 12, delay: 0, size: 3 },
+    { top: 25, left: 25, duration: 10, delay: 2, size: 3.5 },
+    { top: 40, left: 15, duration: 14, delay: 1, size: 2.8 },
+    { top: 60, left: 12, duration: 11, delay: 3, size: 3.2 },
+    { top: 75, left: 20, duration: 13, delay: 0.5, size: 3.7 },
+    { top: 70, left: 35, duration: 9, delay: 1.5, size: 3 },
+    { top: 60, left: 50, duration: 12, delay: 2.5, size: 3.3 },
+    { top: 75, left: 65, duration: 10, delay: 1, size: 3.1 },
+    { top: 60, left: 80, duration: 13, delay: 2, size: 3.4 },
+    { top: 40, left: 85, duration: 14, delay: 0, size: 3.2 },
+    { top: 25, left: 80, duration: 12, delay: 2, size: 3.5 },
+    { top: 15, left: 70, duration: 11, delay: 1, size: 3 },
+    { top: 10, left: 55, duration: 13, delay: 2.5, size: 3.6 },
+    { top: 10, left: 35, duration: 12, delay: 1.5, size: 3.2 },
+    { top: 25, left: 55, duration: 10, delay: 2, size: 3.4 },
+    { top: 40, left: 65, duration: 14, delay: 0.5, size: 3.1 },
+    { top: 55, left: 60, duration: 13, delay: 1.5, size: 3.3 },
+    { top: 55, left: 40, duration: 12, delay: 2.5, size: 3.2 },
+    { top: 35, left: 30, duration: 11, delay: 1, size: 3.5 },
+    { top: 35, left: 70, duration: 13, delay: 2, size: 3.4 },
+    { top: 50, left: 20, duration: 12, delay: 1.5, size: 3.2 },
+    { top: 65, left: 25, duration: 10, delay: 2, size: 3.1 },
+    { top: 80, left: 40, duration: 14, delay: 0.5, size: 3.3 },
+    { top: 80, left: 60, duration: 13, delay: 1.5, size: 3.2 },
+    { top: 65, left: 75, duration: 12, delay: 2.5, size: 3.5 },
+    { top: 50, left: 80, duration: 11, delay: 1, size: 3.4 },
+    { top: 20, left: 45, duration: 13, delay: 2, size: 3.2 },
+    { top: 70, left: 50, duration: 12, delay: 1.5, size: 3.1 },
+    { top: 30, left: 60, duration: 10, delay: 2, size: 3.3 },
+    { top: 60, left: 30, duration: 14, delay: 0.5, size: 3.2 },
+]
 
 export default function Skills() {
-  return (
-    <section id="skills" className="relative w-full h-[70vh] overflow-hidden bg-background flex items-center justify-center">
-      <h2 className="absolute top-8 left-1/2 -translate-x-1/2 text-4xl font-bold text-center z-10 pointer-events-none">Skills</h2>
-      <div className="absolute inset-0 w-full h-full pointer-events-none">
-        {skills.map((skill, i) => {
-          // Randomize position and animation for each icon
-          const top = getRandom(10, 80)
-          const left = getRandom(5, 90)
-          const duration = getRandom(8, 18)
-          const delay = getRandom(0, 8)
-          const size = getRandom(2.5, 4.5)
-          return (
-            <div
-              key={skill.name + i}
-              className="absolute flex flex-col items-center"
-              style={{
-                top: `${top}%`,
-                left: `${left}%`,
-                animation: `float${i} ${duration}s ease-in-out infinite alternate`,
-                animationDelay: `${delay}s`,
-                zIndex: 2,
-                pointerEvents: 'auto',
-              }}
-            >
-              <div className={`mb-1`} style={{ fontSize: `${size}rem` }}>
-                {skill.icon}
-              </div>
-              <span className="text-xs font-medium bg-white/70 rounded px-2 py-0.5 shadow">{skill.name}</span>
-              <style>
-                {`
-                  @keyframes float${i} {
-                    0% { transform: translateY(0px) scale(1); }
-                    100% { transform: translateY(-30px) scale(1.07); }
-                  }
-                `}
-              </style>
+    return (
+        <section id="skills" className="relative w-full h-[70vh] overflow-hidden bg-transparent flex items-center justify-center">
+            <h2 className="absolute top-8 left-1/2 -translate-x-1/2 text-4xl font-bold text-center z-10 pointer-events-none">Skills</h2>
+            <div className="absolute inset-0 w-full h-full pointer-events-none">
+                {skills.map((skill, i) => {
+                    const pos = skillPositions[i] || { top: 50, left: 50, duration: 12, delay: 0, size: 3 }
+                    return (
+                        <div
+                            key={skill.name + i}
+                            className="absolute flex flex-col items-center"
+                            style={{
+                                top: `${pos.top}%`,
+                                left: `${pos.left}%`,
+                                animation: `float${i} ${pos.duration}s ease-in-out infinite alternate`,
+                                animationDelay: `${pos.delay}s`,
+                                zIndex: 2,
+                                pointerEvents: 'auto',
+                            }}
+                        >
+                            <div className={`mb-1`} style={{ fontSize: `${pos.size}rem` }}>
+                                {skill.icon}
+                            </div>
+                            <span className="text-xs font-medium rounded px-2 py-0.5 shadow bg-white/70">{skill.name}</span>
+                            <style>
+                                {`
+                                    @keyframes float${i} {
+                                        0% { transform: translateY(0px) scale(1); }
+                                        100% { transform: translateY(-30px) scale(1.07); }
+                                    }
+                                `}
+                            </style>
+                        </div>
+                    )
+                })}
             </div>
-          )
-        })}
-      </div>
-    </section>
-  )
+        </section>
+    )
 }

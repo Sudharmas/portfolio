@@ -3,28 +3,58 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
+import { useRef, useState } from 'react'
+import emailjs from '@emailjs/browser'
 
 export default function Contact() {
   const contactInfo = [
     {
       icon: Mail,
       title: 'Email',
-      value: 'hello@portfolio.dev',
-      href: 'mailto:hello@portfolio.dev'
+      value: 'sudharma@sudharma-s.in.net',
+      href: 'mailto:sudharma@sudharma-s.in.net'
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+1 (555) 123-4567',
-      href: 'tel:+15551234567'
+      value: '+91 7483267532',
+      href: 'tel:+917483267532'
     },
     {
       icon: MapPin,
       title: 'Location',
-      value: 'San Francisco, CA',
-      href: '#'
+      value: 'Udupi',
+      href: 'https://maps.app.goo.gl/FMSn1nm3qsuzNZ4K9'
     }
   ]
+
+  const form = useRef<HTMLFormElement>(null)
+  const [sending, setSending] = useState(false)
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setSending(true)
+    setError(null)
+    setSent(false)
+    if (!form.current) return
+
+    try {
+      await emailjs.sendForm(
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
+        form.current,
+        'YOUR_PUBLIC_KEY'
+      )
+      setSent(true)
+      form.current.reset()
+    } catch (err) {
+      setError('Failed to send message. Please try again.')
+    } finally {
+      setSending(false)
+    }
+  }
 
   return (
     <section id="contact" className="py-20 relative">
@@ -32,7 +62,7 @@ export default function Contact() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Let's <span className="text-primary glow">Connect</span>
+              Let's <span className="text-primary" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e' }}>Connect</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Ready to bring your ideas to life? Let's discuss your next project and create 
@@ -45,39 +75,57 @@ export default function Contact() {
             <Card className="glass-strong border-0 glow">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                <form className="space-y-6">
+                <form ref={form} onSubmit={handleSend} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <Input 
+                        name="user_name"
                         placeholder="Your Name" 
                         className="glass border-white/20 focus:border-primary"
+                        required
                       />
                     </div>
                     <div>
                       <Input 
+                        name="user_email"
                         type="email" 
                         placeholder="Your Email" 
                         className="glass border-white/20 focus:border-primary"
+                        required
                       />
                     </div>
                   </div>
                   <div>
                     <Input 
+                      name="subject"
                       placeholder="Subject" 
                       className="glass border-white/20 focus:border-primary"
+                      required
                     />
                   </div>
                   <div>
                     <Textarea 
+                      name="message"
                       placeholder="Your Message" 
                       rows={6}
                       className="glass border-white/20 focus:border-primary resize-none"
+                      required
                     />
                   </div>
-                  <Button className="w-full glow-strong group">
+                  <Button 
+                    className="w-full glow-strong group"
+                    type="submit"
+                    disabled={sending}
+                  >
                     <Send className="h-4 w-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                    Send Message
+                    {sending ? 'Sending...' : 'Send Message'}
                   </Button>
+                  {sent && (
+                    <div className="text-green-500 text-center mt-2">Message sent successfully!</div>
+                  )}
+                  {error && (
+                    <div className="text-red-500 text-center mt-2">{error}</div>
+                  )}
                 </form>
               </CardContent>
             </Card>

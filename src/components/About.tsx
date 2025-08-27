@@ -5,23 +5,23 @@ export default function About() {
   const features = [
     {
       icon: Code,
-      title: 'Clean Code',
-      description: 'Writing maintainable, scalable, and efficient code that stands the test of time.'
+      title: 'Robust ML Code',
+      description: 'Developing reliable, maintainable, and scalable machine learning pipelines and models.'
     },
     {
       icon: Palette,
-      title: 'Design First',
-      description: 'Creating beautiful, user-centered designs that enhance the overall experience.'
+      title: 'Model Interpretability',
+      description: 'Designing solutions that prioritize transparency and explainability in AI systems.'
     },
     {
       icon: Zap,
-      title: 'Performance',
-      description: 'Optimizing for speed and performance to deliver lightning-fast applications.'
+      title: 'Efficient Deployment',
+      description: 'Optimizing and deploying AI/ML models for real-world performance and scalability.'
     },
     {
       icon: Users,
-      title: 'Collaboration',
-      description: 'Working closely with teams to bring ideas to life and exceed expectations.'
+      title: 'Cross-functional Collaboration',
+      description: 'Partnering with researchers, engineers, and stakeholders to deliver impactful AI solutions.'
     }
   ]
 
@@ -51,7 +51,7 @@ export default function About() {
                 every project not only functions flawlessly but also provides an outstanding user experience.
               </p>
               <div className="flex flex-wrap gap-2">
-                {['AI', 'Tensorflow', 'Pytorch', 'Python', 'RAG', 'MongoDB','ChromaDB','Langchain','Langgraph','google ADK','Vertex AI','Micrpspft Azure','Databricks','GenAI',''].map((tech) => (
+                {['Artificial Intelligence', 'Machine Learning', 'Deep Learning', 'Python','Prompt Engineering','Automation','No Code AI'].map((tech) => (
                   <span key={tech} className="px-3 py-1 glass rounded-full text-sm text-primary">
                     {tech}
                   </span>
@@ -62,27 +62,27 @@ export default function About() {
             <div className="glass-strong p-8 rounded-2xl glow">
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-semibold mb-2">Frontend Development</h4>
+                  <h4 className="font-semibold mb-2">Machine Learning</h4>
                   <div className="w-full bg-secondary rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full w-[95%] glow"></div>
+                    <div className="bg-primary h-2 rounded-full w-[85%] glow"></div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Backend Development</h4>
+                  <h4 className="font-semibold mb-2">AI Engineering</h4>
                   <div className="w-full bg-secondary rounded-full h-2">
-                    <div className="bg-blue-400 h-2 rounded-full w-[90%] glow"></div>
+                    <div className="bg-blue-400 h-2 rounded-full w-[82%] glow"></div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">UI/UX Design</h4>
+                  <h4 className="font-semibold mb-2">Agentic AI Development</h4>
                   <div className="w-full bg-secondary rounded-full h-2">
-                    <div className="bg-purple-400 h-2 rounded-full w-[85%] glow"></div>
+                    <div className="bg-purple-400 h-2 rounded-full w-[89%] glow"></div>
                   </div>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">3D & Animation</h4>
+                  <h4 className="font-semibold mb-2">Propmt Engineering</h4>
                   <div className="w-full bg-secondary rounded-full h-2">
-                    <div className="bg-yellow-400 h-2 rounded-full w-[80%] glow"></div>
+                    <div className="bg-yellow-400 h-2 rounded-full w-[88%] glow"></div>
                   </div>
                 </div>
               </div>

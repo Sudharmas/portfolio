@@ -69,21 +69,6 @@ function Stars() {
   )
 }
 
-function Nebula() {
-  // A large, faint, colored sphere for a nebula effect
-  return (
-    <mesh>
-      <sphereGeometry args={[40, 64, 64]} />
-      <meshBasicMaterial
-        color="#6d28d9"
-        transparent
-        opacity={0.08}
-        side={THREE.BackSide}
-      />
-    </mesh>
-  )
-}
-
 export default function Scene3D() {
   return (
     <div className="fixed inset-0 -z-10">
@@ -94,7 +79,6 @@ export default function Scene3D() {
       >
         <ambientLight intensity={0.1} />
         <pointLight position={[0, 0, 0]} intensity={0.3} color="#fff" />
-        <Nebula />
         <Stars />
         <OrbitControls
           enableZoom={false}

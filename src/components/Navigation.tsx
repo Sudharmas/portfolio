@@ -31,8 +31,8 @@ export default function Navigation() {
             <div
             className="text-3xl font-extrabold tracking-tight flex items-center select-none"
             style={{
-              fontSize: '4.5em',
-              textShadow: '0 0 20px #440c72ff, 0 0 70px #7e4ef0ff, 0 2px 8px #0008',
+              fontSize: '3em',
+              textShadow: '0 0 20px #25a85cff, 0 0 70px #70ffb0ff, 0 2px 8px #0008',
               letterSpacing: '0.08em',
               color: '#ffffffff',
               fontFamily: "Orbitron",

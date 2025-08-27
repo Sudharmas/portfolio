@@ -16,7 +16,7 @@ export default function Hero() {
           
           <h2 className="text-2xl md:text-4xl mb-8 text-muted-foreground">
             Building digital experiences with{' '}
-            <span className="text-glow">passion</span> and{' '}
+            <span className="text-primary glow">passion</span> and{' '}
             <span className="text-purple-400">precision</span>
           </h2>
           
@@ -26,25 +26,11 @@ export default function Hero() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button 
-              size="lg" 
-              className="glow-strong group"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-            >
+            <Button size="lg" className="glow-strong group">
               View My Work
               <ArrowDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="glass-strong"
-              onClick={() => {
-                const link = document.createElement('a');
-                link.href = '/cv.pdf';
-                link.download = 'Sudharma_CV.pdf';
-                link.click();
-              }}
-            >
+            <Button variant="outline" size="lg" className="glass-strong">
               Download CV
             </Button>
           </div>

@@ -2,29 +2,6 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Code, Palette, Zap, Users } from 'lucide-react'
 
 export default function About() {
-  const skills = [
-    {
-      category: 'AI',
-      items: ['TensorFlow', 'PyTorch', 'OpenAI', 'Computer Vision', 'NLP'],
-      icon: '🤖'
-    },
-    {
-      category: 'Machine Learning',
-      items: ['Python', 'Scikit-learn', 'Pandas', 'NumPy', 'Data Analysis'],
-      icon: '📊'
-    },
-    {
-      category: 'Agentic AI',
-      items: ['LangChain', 'AutoGPT', 'Multi-Agent Systems', 'RAG', 'Agents'],
-      icon: '🧠'
-    },
-    {
-      category: 'Backend',
-      items: ['Node.js', 'Python', 'PostgreSQL', 'MongoDB', 'AWS'],
-      icon: '⚙️'
-    }
-  ]
-
   const features = [
     {
       icon: Code,
@@ -54,7 +31,7 @@ export default function About() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              About <span className="text-glow">Me</span>
+              About <span className="text-primary glow">Me</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               I'm a passionate full-stack developer with a keen eye for design and a love for creating 
@@ -84,24 +61,33 @@ export default function About() {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {skills.map((skill, index) => (
-                <Card key={index} className="glass-strong border-0 group hover:glow transition-all duration-300">
-                  <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <span className="text-2xl mr-3">{skill.icon}</span>
-                      <h4 className="font-bold text-lg">{skill.category}</h4>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {skill.items.map((item) => (
-                        <span key={item} className="px-2 py-1 glass rounded text-xs text-primary">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="glass-strong p-8 rounded-2xl glow">
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-semibold mb-2">Frontend Development</h4>
+                  <div className="w-full bg-secondary rounded-full h-2">
+                    <div className="bg-primary h-2 rounded-full w-[95%] glow"></div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">Backend Development</h4>
+                  <div className="w-full bg-secondary rounded-full h-2">
+                    <div className="bg-blue-400 h-2 rounded-full w-[90%] glow"></div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">UI/UX Design</h4>
+                  <div className="w-full bg-secondary rounded-full h-2">
+                    <div className="bg-purple-400 h-2 rounded-full w-[85%] glow"></div>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold mb-2">3D & Animation</h4>
+                  <div className="w-full bg-secondary rounded-full h-2">
+                    <div className="bg-yellow-400 h-2 rounded-full w-[80%] glow"></div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

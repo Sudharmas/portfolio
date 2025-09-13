@@ -9,7 +9,7 @@ import React from 'react'
 
 // Helper for custom image icons
 const CustomIcon = ({ src, alt }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} className="w-12 h-12 object-contain inline-block" />
+    <img src={src} alt={alt} className="w-16 h-16 object-contain inline-block" />
 )
 
 const skills = [
@@ -40,45 +40,42 @@ const skills = [
     { name: 'n8n', icon: <CustomIcon src="src/components/n8n-color.png" alt="n8n" /> },
 ]
 
-function generateRandomPositions(count: number, width: number, height: number, minDist: number) {
+function generateGridPositions(count: number, width: number, height: number) {
     const positions: { x: number; y: number }[] = []
-
-    let attempts = 0
-    while (positions.length < count && attempts < count * 100) {
-        attempts++
-        const pad = 40
-        const x = Math.random() * (width - 2 * pad) + pad
-        const y = Math.random() * (height - 2 * pad) + pad
-
-        let tooClose = false
-        for (const pos of positions) {
-            const dx = pos.x - x
-            const dy = pos.y - y
-            if (Math.sqrt(dx * dx + dy * dy) < minDist) {
-                tooClose = true
-                break
-            }
-        }
-        if (!tooClose) {
-            positions.push({ x, y })
-        }
-    }
-    while (positions.length < count) {
+    const cols = Math.ceil(Math.sqrt(count * (width / height)))
+    const rows = Math.ceil(count / cols)
+    
+    const cellWidth = width / cols
+    const cellHeight = height / rows
+    const padding = 60
+    
+    for (let i = 0; i < count; i++) {
+        const row = Math.floor(i / cols)
+        const col = i % cols
+        
+        // Add some randomness within each cell for organic feel
+        const randomX = (Math.random() - 0.5) * (cellWidth * 0.3)
+        const randomY = (Math.random() - 0.5) * (cellHeight * 0.3)
+        
+        const x = col * cellWidth + cellWidth / 2 + randomX
+        const y = row * cellHeight + cellHeight / 2 + randomY
+        
+        // Ensure positions stay within bounds
         positions.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
+            x: Math.max(padding, Math.min(width - padding, x)),
+            y: Math.max(padding, Math.min(height - padding, y))
         })
     }
+    
     return positions
 }
 
 export default function Skills() {
-    const width = 900
-    const height = 420
-    const minDist = 70
+    const width = 1000
+    const height = 500
 
     const positions = React.useMemo(
-        () => generateRandomPositions(skills.length, width, height, minDist),
+        () => generateGridPositions(skills.length, width, height),
         []
     )
 
@@ -99,23 +96,40 @@ export default function Skills() {
                         return (
                             <div
                                 key={skill.name + i}
-                                className="absolute pointer-events-auto transition-transform duration-700 group"
+                                 className="absolute pointer-events-auto transition-all duration-500 group hover:z-10"
                                 style={{
                                     left: x,
                                     top: y,
-                                    fontSize: '2.8rem', // Increased size
-                                    animation: `floatIcon${i} 6s ease-in-out infinite alternate`,
+                                    fontSize: '3.5rem',
+                                    animation: `floatIcon${i} ${4 + (i % 3)}s ease-in-out infinite`,
+                                    animationDelay: `${i * 0.2}s`,
                                     transform: 'translate(-50%, -50%)',
                                 }}
                             >
-                                <span className="block transition-transform duration-300 group-hover:scale-125">
-                                    {skill.icon}
-                                </span>
+                                <div className="relative group-hover:scale-125 transition-transform duration-300">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 scale-150"></div>
+                                    <span className="block relative z-10 drop-shadow-lg">
+                                        {skill.icon}
+                                    </span>
+                                </div>
+                                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium text-foreground whitespace-nowrap bg-background/80 backdrop-blur-sm px-2 py-1 rounded-md border border-border/50">
+                                    {skill.name}
+                                </div>
                                 <style>
                                     {`
                                         @keyframes floatIcon${i} {
-                                            0% { transform: translate(-50%, -50%) scale(1); }
-                                            100% { transform: translate(-50%, -50%) scale(1.13) rotate(${(Math.random() - 0.5) * 20}deg); }
+                                            0%, 100% { 
+                                                transform: translate(-50%, -50%) translateY(0px) rotate(0deg) scale(1); 
+                                            }
+                                            25% { 
+                                                transform: translate(-50%, -50%) translateY(-${5 + (i % 10)}px) rotate(${(i % 2 === 0 ? 1 : -1) * 2}deg) scale(1.05); 
+                                            }
+                                            50% { 
+                                                transform: translate(-50%, -50%) translateY(-${10 + (i % 8)}px) rotate(0deg) scale(1.1); 
+                                            }
+                                            75% { 
+                                                transform: translate(-50%, -50%) translateY(-${5 + (i % 6)}px) rotate(${(i % 2 === 0 ? -1 : 1) * 2}deg) scale(1.05); 
+                                            }
                                         }
                                     `}
                                 </style>

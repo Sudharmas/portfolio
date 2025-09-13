@@ -3,8 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Mail, Phone, MapPin, Send } from 'lucide-react'
-import { useRef, useState } from 'react'
-import emailjs from '@emailjs/browser'
+import { useState } from 'react'
 
 export default function Contact() {
   const contactInfo = [
@@ -28,33 +27,7 @@ export default function Contact() {
     }
   ]
 
-  const form = useRef<HTMLFormElement>(null)
-  const [sending, setSending] = useState(false)
   const [sent, setSent] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setSending(true)
-    setError(null)
-    setSent(false)
-    if (!form.current) return
-
-    try {
-      await emailjs.sendForm(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
-        form.current,
-        'YOUR_PUBLIC_KEY'
-      )
-      setSent(true)
-      form.current.reset()
-    } catch (err) {
-      setError('Failed to send message. Please try again.')
-    } finally {
-      setSending(false)
-    }
-  }
 
   return (
     <section id="contact" className="py-20 relative">
@@ -75,7 +48,31 @@ export default function Contact() {
             <Card className="glass-strong border-0 glow">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                <form ref={form} onSubmit={handleSend} className="space-y-6">
+                <form 
+                  name="contact" 
+                  method="POST" 
+                  data-netlify="true" 
+                  className="space-y-6"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    const form = e.target as HTMLFormElement
+                    const formData = new FormData(form)
+                    
+                    fetch('/', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                      body: new URLSearchParams(formData as any).toString()
+                    })
+                    .then(() => {
+                      setSent(true)
+                      form.reset()
+                    })
+                    .catch(() => {
+                      alert('Error sending message. Please try again.')
+                    })
+                  }}
+                >
+                  <input type="hidden" name="form-name" value="contact" />
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <Input 
@@ -115,16 +112,12 @@ export default function Contact() {
                   <Button 
                     className="w-full glow-strong group"
                     type="submit"
-                    disabled={sending}
                   >
                     <Send className="h-4 w-4 mr-2 group-hover:translate-x-1 transition-transform" />
-                    {sending ? 'Sending...' : 'Send Message'}
+                    Send Message
                   </Button>
                   {sent && (
                     <div className="text-green-500 text-center mt-2">Message sent successfully!</div>
-                  )}
-                  {error && (
-                    <div className="text-red-500 text-center mt-2">{error}</div>
                   )}
                 </form>
               </CardContent>

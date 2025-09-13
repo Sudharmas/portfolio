@@ -40,31 +40,33 @@ const skills = [
     { name: 'n8n', icon: <CustomIcon src="src/components/n8n-color.png" alt="n8n" /> },
 ]
 
-function generateRandomPositions(count: number, width: number, height: number) {
-    const positions: { x: number; y: number }[] = []
-    const padding = 80
-    const minDistance = 80 // Minimum distance between icons
+function generateCircularPositions(count: number, width: number, height: number) {
+    const positions: { x: number; y: number; circle: number }[] = []
+    const centerX = width / 2
+    const centerY = height / 2
     
-    for (let i = 0; i < count; i++) {
-        let attempts = 0
-        let position
+    // Calculate responsive radii
+    const baseRadius = Math.min(width, height) * 0.15
+    const circles = [
+        { radius: baseRadius, itemCount: Math.ceil(count * 0.4) }, // Inner circle - 40%
+        { radius: baseRadius * 1.8, itemCount: Math.ceil(count * 0.35) }, // Middle circle - 35%
+        { radius: baseRadius * 2.6, itemCount: Math.floor(count * 0.25) } // Outer circle - 25%
+    ]
+    
+    let itemIndex = 0
+    
+    circles.forEach((circle, circleIndex) => {
+        const angleStep = (2 * Math.PI) / circle.itemCount
         
-        do {
-            // Generate completely random positions
-            position = {
-                x: Math.random() * (width - 2 * padding) + padding,
-                y: Math.random() * (height - 2 * padding) + padding
-            }
-            attempts++
-        } while (
-            attempts < 50 && 
-            positions.some(pos => 
-                Math.sqrt(Math.pow(pos.x - position.x, 2) + Math.pow(pos.y - position.y, 2)) < minDistance
-            )
-        )
-        
-        positions.push(position)
-    }
+        for (let i = 0; i < circle.itemCount && itemIndex < count; i++) {
+            const angle = i * angleStep
+            const x = centerX + circle.radius * Math.cos(angle)
+            const y = centerY + circle.radius * Math.sin(angle)
+            
+            positions.push({ x, y, circle: circleIndex })
+            itemIndex++
+        }
+    })
     
     return positions
 }
@@ -90,7 +92,7 @@ export default function Skills() {
     }, [])
 
     const positions = React.useMemo(
-        () => generateRandomPositions(skills.length, dimensions.width, dimensions.height),
+        () => generateCircularPositions(skills.length, dimensions.width, dimensions.height),
         [dimensions]
     )
 
@@ -113,7 +115,13 @@ export default function Skills() {
             >
                 <div className="relative w-full h-full mx-auto">
                     {skills.map((skill, i) => {
-                        const { x, y } = positions[i]
+                        const position = positions[i]
+                        if (!position) return null
+                        
+                        const { x, y, circle } = position
+                        const rotationDirection = circle % 2 === 0 ? 1 : -1 // Alternate rotation direction
+                        const rotationSpeed = 20 + (circle * 5) // Different speeds for each circle
+                        
                         return (
                             <div
                                 key={skill.name + i}
@@ -121,10 +129,10 @@ export default function Skills() {
                                 style={{
                                     left: x,
                                     top: y,
-                                    fontSize: window.innerWidth < 640 ? '2rem' : window.innerWidth < 1024 ? '2.5rem' : '3.5rem',
-                                    animation: `floatIcon${i} ${4 + (i % 3)}s ease-in-out infinite`,
-                                    animationDelay: `${i * 0.2}s`,
-                                    transform: 'translate(-50%, -50%)',
+                                    fontSize: window.innerWidth < 640 ? '1.5rem' : window.innerWidth < 1024 ? '2rem' : '2.5rem',
+                                    animation: `circleRotate${circle} ${rotationSpeed}s linear infinite, floatIcon${i} ${3 + (i % 2)}s ease-in-out infinite`,
+                                    animationDelay: `${i * 0.1}s`,
+                                    transformOrigin: `${dimensions.width / 2 - x}px ${dimensions.height / 2 - y}px`,
                                 }}
                             >
                                 <div className="relative group-hover:scale-125 transition-transform duration-300">
@@ -138,18 +146,20 @@ export default function Skills() {
                                 </div>
                                 <style>
                                     {`
+                                        @keyframes circleRotate${circle} {
+                                            from { 
+                                                transform: translate(-50%, -50%) rotate(0deg); 
+                                            }
+                                            to { 
+                                                transform: translate(-50%, -50%) rotate(${rotationDirection * 360}deg); 
+                                            }
+                                        }
                                         @keyframes floatIcon${i} {
                                             0%, 100% { 
-                                                transform: translate(-50%, -50%) translateY(0px) rotate(0deg) scale(1); 
-                                            }
-                                            25% { 
-                                                transform: translate(-50%, -50%) translateY(-${5 + (i % 10)}px) rotate(${(i % 2 === 0 ? 1 : -1) * 2}deg) scale(1.05); 
+                                                transform: scale(1); 
                                             }
                                             50% { 
-                                                transform: translate(-50%, -50%) translateY(-${10 + (i % 8)}px) rotate(0deg) scale(1.1); 
-                                            }
-                                            75% { 
-                                                transform: translate(-50%, -50%) translateY(-${5 + (i % 6)}px) rotate(${(i % 2 === 0 ? -1 : 1) * 2}deg) scale(1.05); 
+                                                transform: scale(1.1); 
                                             }
                                         }
                                     `}

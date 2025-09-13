@@ -7,9 +7,9 @@ import { MdOutlineAutoGraph } from 'react-icons/md'
 import { GiArtificialIntelligence } from 'react-icons/gi'
 import React from 'react'
 
-// Helper for custom image icons
+// Helper for custom image icons - responsive sizing
 const CustomIcon = ({ src, alt }: { src: string; alt: string }) => (
-    <img src={src} alt={alt} className="w-16 h-16 object-contain inline-block" />
+    <img src={src} alt={alt} className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 object-contain inline-block" />
 )
 
 const skills = [
@@ -40,55 +40,76 @@ const skills = [
     { name: 'n8n', icon: <CustomIcon src="src/components/n8n-color.png" alt="n8n" /> },
 ]
 
-function generateGridPositions(count: number, width: number, height: number) {
+function generateRandomPositions(count: number, width: number, height: number) {
     const positions: { x: number; y: number }[] = []
-    const cols = Math.ceil(Math.sqrt(count * (width / height)))
-    const rows = Math.ceil(count / cols)
-    
-    const cellWidth = width / cols
-    const cellHeight = height / rows
-    const padding = 60
+    const padding = 80
+    const minDistance = 80 // Minimum distance between icons
     
     for (let i = 0; i < count; i++) {
-        const row = Math.floor(i / cols)
-        const col = i % cols
+        let attempts = 0
+        let position
         
-        // Add some randomness within each cell for organic feel
-        const randomX = (Math.random() - 0.5) * (cellWidth * 0.3)
-        const randomY = (Math.random() - 0.5) * (cellHeight * 0.3)
+        do {
+            // Generate completely random positions
+            position = {
+                x: Math.random() * (width - 2 * padding) + padding,
+                y: Math.random() * (height - 2 * padding) + padding
+            }
+            attempts++
+        } while (
+            attempts < 50 && 
+            positions.some(pos => 
+                Math.sqrt(Math.pow(pos.x - position.x, 2) + Math.pow(pos.y - position.y, 2)) < minDistance
+            )
+        )
         
-        const x = col * cellWidth + cellWidth / 2 + randomX
-        const y = row * cellHeight + cellHeight / 2 + randomY
-        
-        // Ensure positions stay within bounds
-        positions.push({
-            x: Math.max(padding, Math.min(width - padding, x)),
-            y: Math.max(padding, Math.min(height - padding, y))
-        })
+        positions.push(position)
     }
     
     return positions
 }
 
 export default function Skills() {
-    const width = 1000
-    const height = 500
+    // Responsive dimensions
+    const [dimensions, setDimensions] = React.useState({ width: 1000, height: 500 })
+    
+    React.useEffect(() => {
+        const updateDimensions = () => {
+            if (window.innerWidth < 640) {
+                setDimensions({ width: 350, height: 600 }) // Mobile - taller to accommodate more icons
+            } else if (window.innerWidth < 1024) {
+                setDimensions({ width: 600, height: 500 }) // Tablet
+            } else {
+                setDimensions({ width: 1000, height: 500 }) // Desktop
+            }
+        }
+        
+        updateDimensions()
+        window.addEventListener('resize', updateDimensions)
+        return () => window.removeEventListener('resize', updateDimensions)
+    }, [])
 
     const positions = React.useMemo(
-        () => generateGridPositions(skills.length, width, height),
-        []
+        () => generateRandomPositions(skills.length, dimensions.width, dimensions.height),
+        [dimensions]
     )
 
     return (
         <section
             id="skills"
-            className="relative w-full h-[70vh] overflow-hidden bg-transparent flex items-center justify-center"
-            style={{ minHeight: height }}
+            className="relative w-full min-h-[60vh] sm:min-h-[70vh] overflow-hidden bg-transparent flex items-center justify-center py-12 sm:py-20"
         >
-            <h2 className="absolute top-8 left-1/2 -translate-x-1/2 text-4xl font-bold text-center z-10 pointer-events-none">Skills</h2>
+            <h2 className="absolute top-4 sm:top-8 left-1/2 -translate-x-1/2 text-2xl sm:text-3xl md:text-4xl font-bold text-center z-10 pointer-events-none">Skills</h2>
             <div
                 className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none"
-                style={{ width, height, left: '50%', top: '50%', transform: 'translate(-50%, -50%)', position: 'absolute' }}
+                style={{ 
+                    width: dimensions.width, 
+                    height: dimensions.height, 
+                    left: '50%', 
+                    top: '50%', 
+                    transform: 'translate(-50%, -50%)', 
+                    position: 'absolute' 
+                }}
             >
                 <div className="relative w-full h-full mx-auto">
                     {skills.map((skill, i) => {
@@ -96,11 +117,11 @@ export default function Skills() {
                         return (
                             <div
                                 key={skill.name + i}
-                                 className="absolute pointer-events-auto transition-all duration-500 group hover:z-10"
+                                className="absolute pointer-events-auto transition-all duration-500 group hover:z-10"
                                 style={{
                                     left: x,
                                     top: y,
-                                    fontSize: '3.5rem',
+                                    fontSize: window.innerWidth < 640 ? '2rem' : window.innerWidth < 1024 ? '2.5rem' : '3.5rem',
                                     animation: `floatIcon${i} ${4 + (i % 3)}s ease-in-out infinite`,
                                     animationDelay: `${i * 0.2}s`,
                                     transform: 'translate(-50%, -50%)',
@@ -112,7 +133,7 @@ export default function Skills() {
                                         {skill.icon}
                                     </span>
                                 </div>
-                                <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium text-foreground whitespace-nowrap bg-background/80 backdrop-blur-sm px-2 py-1 rounded-md border border-border/50">
+                                <div className="absolute -bottom-6 sm:-bottom-8 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-xs font-medium text-foreground whitespace-nowrap bg-background/80 backdrop-blur-sm px-2 py-1 rounded-md border border-border/50">
                                     {skill.name}
                                 </div>
                                 <style>

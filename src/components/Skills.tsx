@@ -118,21 +118,32 @@ export default function Skills() {
                         const position = positions[i]
                         if (!position) return null
                         
-                        const { x, y, circle } = position
+                        const { circle } = position
                         const rotationDirection = circle % 2 === 0 ? 1 : -1 // Alternate rotation direction
-                        const rotationSpeed = 20 + (circle * 5) // Different speeds for each circle
+                        const rotationSpeed = 30 - (circle * 5) // Inner circles rotate faster
+                        const centerX = dimensions.width / 2
+                        const centerY = dimensions.height / 2
+                        
+                        // Calculate base radius for each circle
+                        const baseRadius = Math.min(dimensions.width, dimensions.height) * 0.15
+                        const circleRadius = baseRadius * (1 + circle * 0.8)
+                        
+                        // Calculate angle for this skill in the circle
+                        const skillsInCircle = positions.filter(p => p.circle === circle).length
+                        const skillIndexInCircle = positions.slice(0, i + 1).filter(p => p.circle === circle).length - 1
+                        const baseAngle = (skillIndexInCircle / skillsInCircle) * 360
                         
                         return (
                             <div
                                 key={skill.name + i}
                                 className="absolute pointer-events-auto transition-all duration-500 group hover:z-10"
                                 style={{
-                                    left: x,
-                                    top: y,
+                                    left: centerX,
+                                    top: centerY,
                                     fontSize: window.innerWidth < 640 ? '1.5rem' : window.innerWidth < 1024 ? '2rem' : '2.5rem',
-                                    animation: `circleRotate${circle} ${rotationSpeed}s linear infinite, floatIcon${i} ${3 + (i % 2)}s ease-in-out infinite`,
+                                    animation: `circleRotate${circle}_${i} ${rotationSpeed}s linear infinite, pulse${i} 2s ease-in-out infinite`,
                                     animationDelay: `${i * 0.1}s`,
-                                    transformOrigin: `${dimensions.width / 2 - x}px ${dimensions.height / 2 - y}px`,
+                                    transform: 'translate(-50%, -50%)',
                                 }}
                             >
                                 <div className="relative group-hover:scale-125 transition-transform duration-300">
@@ -146,20 +157,26 @@ export default function Skills() {
                                 </div>
                                 <style>
                                     {`
-                                        @keyframes circleRotate${circle} {
+                                        @keyframes circleRotate${circle}_${i} {
                                             from { 
-                                                transform: translate(-50%, -50%) rotate(0deg); 
+                                                transform: translate(-50%, -50%) 
+                                                          rotate(${baseAngle}deg) 
+                                                          translateX(${circleRadius}px) 
+                                                          rotate(${-baseAngle}deg);
                                             }
                                             to { 
-                                                transform: translate(-50%, -50%) rotate(${rotationDirection * 360}deg); 
+                                                transform: translate(-50%, -50%) 
+                                                          rotate(${baseAngle + (rotationDirection * 360)}deg) 
+                                                          translateX(${circleRadius}px) 
+                                                          rotate(${-baseAngle - (rotationDirection * 360)}deg);
                                             }
                                         }
-                                        @keyframes floatIcon${i} {
+                                        @keyframes pulse${i} {
                                             0%, 100% { 
-                                                transform: scale(1); 
+                                                filter: brightness(1); 
                                             }
                                             50% { 
-                                                transform: scale(1.1); 
+                                                filter: brightness(1.2); 
                                             }
                                         }
                                     `}

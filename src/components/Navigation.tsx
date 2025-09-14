@@ -39,7 +39,12 @@ export default function Navigation() {
               WebkitTextStroke: '1px #997cffff',
             }}
             >
-            <span className="mr-2">S</span>
+              <img
+              src="/logo.png"
+              alt="Logo"
+              className="mr-2"
+              style={{ height: '1em', width: '1em', objectFit: 'contain' }}
+              />
             </div>
 
           {/* Desktop Navigation */}

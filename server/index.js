@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import pkg from 'pg';
-import { MongoClient } from 'mongodb';
 const { Pool } = pkg;
 
 dotenv.config();
@@ -18,15 +17,71 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-// MongoDB connection
-const mongoClient = new MongoClient(process.env.MONGODB_URI);
-let mongoDb;
-mongoClient.connect().then(client => {
-  mongoDb = client.db(process.env.MONGODB_DBNAME);
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('MongoDB connection error:', err);
-});
+
+// Zapier integration
+async function submitToZapier(formData) {
+  // Prepare data with EXACT field IDs from your Interface
+  // const formDataParams = new URLSearchParams({
+  //   'cmg3z0wlo00560bjp6sog8j8l': formData.user_name,       // Name field
+  //   'cmg3z0wlo00570bjp7398a03y': formData.user_email,     // Email field
+  //   'cmg3z0wlo00580bjpcwx59v2k': formData.subject,        // Subject field
+  //   'cmg3z0wlo00590bjpaai1ayx6': formData.message,        // Message field
+  //   'cmg3z0wlo005a0bjp17xr68hl': new Date().toISOString() // Auto-set current date
+  // });
+
+  // const response = await fetch('https://untitled-zap-interface-bbe0c8.zapier.app/mailautomation', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/x-www-form-urlencoded'
+  //   },
+  //   body: formDataParams
+  // });
+
+  // EXACT field IDs from your Interface
+  // Before sending, log the exact payload
+  const formDataParams = new URLSearchParams({
+    'cmg3z0wlo00560bjp6sog8j8l': 'Test Name',
+    'cmg3z0wlo00570bjp7398a03y': 'test@example.com',
+    'cmg3z0wlo00580bjpcwx59v2k': 'Test Subject',
+    'cmg3z0wlo00590bjpaai1ayx6': 'Test Message',
+    'cmg3z0wlo005a0bjp17xr68hl': new Date().toISOString()
+  });
+
+  console.log('Sending this exact data:');
+  console.log(formDataParams.toString());
+  // This should output something like:
+  // cmg3z0wlo00560bjp6sog8j8l=Test+Name&cmg3z0wlo00570bjp7398a03y=test%40example.com&...
+
+  console.log('Sending data:', formDataParams.toString()); // Debug: see what's being sent
+
+  try {
+    const response = await fetch('https://untitled-zap-interface-bbe0c8.zapier.app/mailautomation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: formDataParams
+    });
+
+    console.log('Response status:', response.status); // Debug: see response
+    console.log('Response ok:', response.ok);
+
+    if (response.ok) {
+      console.log('✅ Success!');
+    } else {
+      console.log('❌ Failed with status:', response.status);
+    }
+  } catch (error) {
+    console.error('❌ Network error:', error);
+  }
+
+  // if (response.ok) {
+  //   console.log('Form submitted successfully to Zapier!');
+  //   return { success: true };
+  // } else {
+  //   throw new Error(`HTTP error! status: ${response.status}`);
+  // }
+}
 
 app.post('/api/contact', async (req, res) => {
   const { user_name, user_email, subject, message } = req.body;
@@ -36,10 +91,8 @@ app.post('/api/contact', async (req, res) => {
       'INSERT INTO contact_messages (user_name, user_email, subject, message) VALUES ($1, $2, $3, $4)',
       [user_name, user_email, subject, message]
     );
-    // MongoDB insert
-    if (mongoDb) {
-      await mongoDb.collection('contact_messages').insertOne({ user_name, user_email, subject, message });
-    }
+    // Zapier integration
+    await submitToZapier({ user_name, user_email, subject, message });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

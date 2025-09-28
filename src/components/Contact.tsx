@@ -53,13 +53,21 @@ export default function Contact() {
                   method="POST"
                   data-netlify="true"
                   className="space-y-6"
-                  data-netlify="true"
-                  onSubmit={(e) => {
-                    e.preventDefault()
-                    const form = e.target as HTMLFormElement
-                    const formData = new FormData(form)
-                    
-                    fetch('/', {
+
+                  // ...existing code...
+                  onSubmit={async (e) => {
+                    e.preventDefault();
+                    const form = e.target as HTMLFormElement;
+                    const formData = new FormData(form);
+
+                    const payload = {
+                      user_name: formData.get('user_name'),
+                      user_email: formData.get('user_email'),
+                      subject: formData.get('subject'),
+                      message: formData.get('message'),
+                    };
+
+                    const res = await fetch('/api/contact', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify(payload),

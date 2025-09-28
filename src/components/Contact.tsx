@@ -53,6 +53,7 @@ export default function Contact() {
                   method="POST" 
                   data-netlify="true" 
                   className="space-y-6"
+                  netlify
                   onSubmit={(e) => {
                     e.preventDefault()
                     const form = e.target as HTMLFormElement

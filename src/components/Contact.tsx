@@ -38,7 +38,7 @@ export default function Contact() {
               Let's <span className="text-primary" style={{ textShadow: '0 0 17px #22c55e, 0 0 100px #22c55e' }}>Connect</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Ready to bring your ideas to life? Let's discuss your next project and create 
+              Ready to bring your ideas to life? Let's discuss your next project and create
               something amazing together.
             </p>
           </div>
@@ -48,12 +48,12 @@ export default function Contact() {
             <Card className="glass-strong border-0 glow">
               <CardContent className="p-8">
                 <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                <form 
-                  name="contact" 
-                  method="POST" 
-                  data-netlify="true" 
+                <form
+                  name="contact"
+                  method="POST"
+                  data-netlify="true"
                   className="space-y-6"
-                  
+                  data-netlify="true"
                   onSubmit={(e) => {
                     e.preventDefault()
                     const form = e.target as HTMLFormElement
@@ -61,56 +61,57 @@ export default function Contact() {
                     
                     fetch('/', {
                       method: 'POST',
-                      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                      body: new URLSearchParams(formData as any).toString()
-                    })
-                    .then(() => {
-                      setSent(true)
-                      form.reset()
-                    })
-                    .catch(() => {
-                      alert('Error sending message. Please try again.')
-                    })
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(payload),
+                    });
+
+                    if (res.ok) {
+                      setSent(true);
+                      form.reset();
+                    } else {
+                      alert('Error sending message. Please try again.');
+                    }
                   }}
+                // ...existing code...
                 >
                   <input type="hidden" name="form-name" value="contact" />
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
-                      <Input 
+                      <Input
                         name="user_name"
-                        placeholder="Your Name" 
+                        placeholder="Your Name"
                         className="glass border-white/20 focus:border-primary"
                         required
                       />
                     </div>
                     <div>
-                      <Input 
+                      <Input
                         name="user_email"
-                        type="email" 
-                        placeholder="Your Email" 
+                        type="email"
+                        placeholder="Your Email"
                         className="glass border-white/20 focus:border-primary"
                         required
                       />
                     </div>
                   </div>
                   <div>
-                    <Input 
+                    <Input
                       name="subject"
-                      placeholder="Subject" 
+                      placeholder="Subject"
                       className="glass border-white/20 focus:border-primary"
                       required
                     />
                   </div>
                   <div>
-                    <Textarea 
+                    <Textarea
                       name="message"
-                      placeholder="Your Message" 
+                      placeholder="Your Message"
                       rows={6}
                       className="glass border-white/20 focus:border-primary resize-none"
                       required
                     />
                   </div>
-                  <Button 
+                  <Button
                     className="w-full glow-strong group"
                     type="submit"
                   >
@@ -129,15 +130,15 @@ export default function Contact() {
               <div>
                 <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
                 <p className="text-muted-foreground mb-8 leading-relaxed">
-                  I'm always open to discussing new opportunities, creative projects, 
-                  or potential collaborations. Feel free to reach out through any of 
+                  I'm always open to discussing new opportunities, creative projects,
+                  or potential collaborations. Feel free to reach out through any of
                   the channels below.
                 </p>
               </div>
 
               <div className="space-y-6">
                 {contactInfo.map((info, index) => (
-                  <a 
+                  <a
                     key={index}
                     href={info.href}
                     className="flex items-center p-4 glass-strong rounded-lg hover:glow transition-all duration-300 group"

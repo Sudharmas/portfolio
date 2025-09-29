@@ -18,69 +18,40 @@ const pool = new Pool({
 });
 
 
-// Zapier integration
-async function submitToZapier(formData) {
-  // Prepare data with EXACT field IDs from your Interface
-  // const formDataParams = new URLSearchParams({
-  //   'cmg3z0wlo00560bjp6sog8j8l': formData.user_name,       // Name field
-  //   'cmg3z0wlo00570bjp7398a03y': formData.user_email,     // Email field
-  //   'cmg3z0wlo00580bjpcwx59v2k': formData.subject,        // Subject field
-  //   'cmg3z0wlo00590bjpaai1ayx6': formData.message,        // Message field
-  //   'cmg3z0wlo005a0bjp17xr68hl': new Date().toISOString() // Auto-set current date
-  // });
+// Webhook integration
+async function submitToWebhook(formData) {
+  const payload = {
+    user_name: formData.user_name,
+    user_email: formData.user_email,
+    subject: formData.subject,
+    message: formData.message,
+    timestamp: new Date().toISOString()
+  };
 
-  // const response = await fetch('https://untitled-zap-interface-bbe0c8.zapier.app/mailautomation', {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/x-www-form-urlencoded'
-  //   },
-  //   body: formDataParams
-  // });
-
-  // EXACT field IDs from your Interface
-  // Before sending, log the exact payload
-  const formDataParams = new URLSearchParams({
-    'cmg3z0wlo00560bjp6sog8j8l': 'Test Name',
-    'cmg3z0wlo00570bjp7398a03y': 'test@example.com',
-    'cmg3z0wlo00580bjpcwx59v2k': 'Test Subject',
-    'cmg3z0wlo00590bjpaai1ayx6': 'Test Message',
-    'cmg3z0wlo005a0bjp17xr68hl': new Date().toISOString()
-  });
-
-  console.log('Sending this exact data:');
-  console.log(formDataParams.toString());
-  // This should output something like:
-  // cmg3z0wlo00560bjp6sog8j8l=Test+Name&cmg3z0wlo00570bjp7398a03y=test%40example.com&...
-
-  console.log('Sending data:', formDataParams.toString()); // Debug: see what's being sent
+  console.log('Sending data to webhook:', payload);
 
   try {
-    const response = await fetch('https://untitled-zap-interface-bbe0c8.zapier.app/mailautomation', {
+    const response = await fetch('https://hook.eu2.make.com/hlnub0zoe81eu27teg7ae3hasm2juot8', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
-      body: formDataParams
+      body: JSON.stringify(payload)
     });
 
-    console.log('Response status:', response.status); // Debug: see response
-    console.log('Response ok:', response.ok);
+    console.log('Webhook response status:', response.status);
 
     if (response.ok) {
-      console.log('✅ Success!');
+      console.log('✅ Webhook submitted successfully!');
+      return { success: true };
     } else {
-      console.log('❌ Failed with status:', response.status);
+      console.log('❌ Webhook failed with status:', response.status);
+      throw new Error(`Webhook error! status: ${response.status}`);
     }
   } catch (error) {
-    console.error('❌ Network error:', error);
+    console.error('❌ Webhook network error:', error);
+    throw error;
   }
-
-  // if (response.ok) {
-  //   console.log('Form submitted successfully to Zapier!');
-  //   return { success: true };
-  // } else {
-  //   throw new Error(`HTTP error! status: ${response.status}`);
-  // }
 }
 
 app.post('/api/contact', async (req, res) => {
@@ -91,8 +62,8 @@ app.post('/api/contact', async (req, res) => {
       'INSERT INTO contact_messages (user_name, user_email, subject, message) VALUES ($1, $2, $3, $4)',
       [user_name, user_email, subject, message]
     );
-    // Zapier integration
-    await submitToZapier({ user_name, user_email, subject, message });
+    // Webhook integration
+    await submitToWebhook({ user_name, user_email, subject, message });
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

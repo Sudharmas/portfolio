@@ -75,3 +75,8 @@ app.post('/api/contact', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
+// #Backend running at render : https://portfolio-cxs3.onrender.com/
+// frontend at sudharma-s.in.net
+// mail automation : https://eu2.make.com/2211329/scenarios/7410911/edit

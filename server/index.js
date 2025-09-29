@@ -28,7 +28,7 @@ async function submitToWebhook(formData) {
     timestamp: new Date().toISOString()
   };
 
-  console.log('Sending data to webhook:', payload);
+  console.log('📤 Sending data to webhook:', JSON.stringify(payload, null, 2));
 
   try {
     const response = await fetch('https://hook.eu2.make.com/hlnub0zoe81eu27teg7ae3hasm2juot8', {
@@ -39,17 +39,19 @@ async function submitToWebhook(formData) {
       body: JSON.stringify(payload)
     });
 
-    console.log('Webhook response status:', response.status);
+    console.log('📡 Webhook response status:', response.status);
+    const responseText = await response.text();
+    console.log('📡 Webhook response body:', responseText);
 
     if (response.ok) {
       console.log('✅ Webhook submitted successfully!');
       return { success: true };
     } else {
-      console.log('❌ Webhook failed with status:', response.status);
-      throw new Error(`Webhook error! status: ${response.status}`);
+      console.log('❌ Webhook failed with status:', response.status, 'Body:', responseText);
+      throw new Error(`Webhook error! status: ${response.status}, body: ${responseText}`);
     }
   } catch (error) {
-    console.error('❌ Webhook network error:', error);
+    console.error('❌ Webhook network error:', error.message);
     throw error;
   }
 }

@@ -30,7 +30,7 @@ const skills = [
     { name: 'Databricks', icon: <SiDatabricks className="text-orange-600" /> },
     { name: 'Java', icon: <FaJava className="text-red-600" /> },
     { name: 'Flask', icon: <SiFlask className="text-gray-400" /> },
-    { name: 'Hibernate', icon: <CustomIcon src="src/components/hibernate-logo.png" alt="Hibernate" /> },
+    { name: 'Hibernate', icon: <CustomIcon src="https://hibernate.org/images/hibernate-logo.svg" alt="Hibernate" /> },
     { name: 'Spring', icon: <SiSpring className="text-green-500" /> },
     { name: 'MySQL', icon: <SiMysql className="text-blue-700" /> },
     { name: 'Firebase', icon: <SiFirebase className="text-yellow-500" /> },

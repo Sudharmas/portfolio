@@ -35,7 +35,7 @@ const skills = [
     { name: 'MySQL', icon: <SiMysql className="text-blue-700" /> },
     { name: 'Firebase', icon: <SiFirebase className="text-yellow-500" /> },
     { name: 'Firestore', icon: <CustomIcon src="src/components/firestore.png" alt="Firestore" /> },
-    { name: 'make.com', icon:<CustomIcon src="src/components/make.png" alt="Make.com" /> },
+    { name: 'make.com', icon: <CustomIcon src="https://www.make.com/_next/static/media/make-logo-text-rgb.2a3b78a1.svg" alt="Make.com" /> },
     { name: 'Zapier', icon: <TbBrandZapier className="text-orange-400" /> },
     { name: 'n8n', icon: <CustomIcon src="src/components/n8n-color.png" alt="n8n" /> },
 ]

@@ -24,7 +24,7 @@ const skills = [
     { name: 'MongoDB', icon: <SiMongodb className="text-green-700" /> },
     { name: 'Langchain', icon: <SiLangchain className="text-blue-400" /> },
     { name: 'Langgraph', icon: <PiGraph className="text-indigo-400" /> },
-    { name: 'Google ADK', icon: <CustomIcon src="src/components/agent-development-kit.png" alt="Google ADK" /> },
+    { name: 'Google ADK', icon: <CustomIcon src="https://google.github.io/adk-docs/assets/agent-development-kit.png" alt="Google ADK" /> },
     { name: 'Vertex AI', icon: <CustomIcon src="https://icon.icepanel.io/GCP/svg/Vertex-AI.svg" alt="Vertex AI" /> },
     { name: 'Microsoft Azure', icon: <CustomIcon src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/240px-Microsoft_Azure.svg.png" alt="Azure" /> },
     { name: 'Databricks', icon: <SiDatabricks className="text-orange-600" /> },
@@ -37,7 +37,7 @@ const skills = [
     { name: 'Firestore', icon: <CustomIcon src="https://icon.icepanel.io/GCP/svg/Firestore.svg" alt="Firestore" /> },
     { name: 'make.com', icon: <CustomIcon src="https://www.make.com/_next/static/media/make-logo-text-rgb.2a3b78a1.svg" alt="Make.com" /> },
     { name: 'Zapier', icon: <CustomIcon src="https://cdn.zapier.com/zapier/images/logo_zapier_black.svg" alt="Zapier" /> },
-    { name: 'n8n', icon: <CustomIcon src="src/components/n8n_pink+white_logo.svg" alt="n8n" /> },
+    { name: 'n8n', icon: <CustomIcon src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/N8n-logo-new.svg/1200px-N8n-logo-new.svg.png" alt="n8n" /> },
 ]
 
 function generateCircularPositions(count: number, width: number, height: number) {

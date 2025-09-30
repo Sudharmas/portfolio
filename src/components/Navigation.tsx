@@ -40,7 +40,7 @@ export default function Navigation() {
             }}
             >
               <img
-              src="https://github.com/Sudharmas/assets.github.io/blob/3cca1e746eca83ba96eb4e8b0446704d8ee6d732/assetsimages/src/assets/logo%20copy.png"
+              src="https://sudharmas.github.io/assets/src/assets/logo.png"
               alt="Logo"
               className="mr-2"
               style={{ height: '1em', width: '1em', objectFit: 'contain' }}

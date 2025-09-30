@@ -50,10 +50,12 @@ export default function Hero() {
             </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-            <Button size="lg" className="glow-strong group">
+            <a href="#projects">
+              <Button size="lg" className="glow-strong group">
               View My Work
               <ArrowDown className="ml-2 h-4 w-4 group-hover:translate-y-1 transition-transform" />
-            </Button>
+              </Button>
+            </a>
             <a
               href="/src/components/Sudharma_CV.pdf"
               download

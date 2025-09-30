@@ -59,9 +59,11 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </a>
             ))}
-            <Button variant="outline" className="glass-strong glow">
+            <a href="#contact">
+              <Button variant="outline" className="glass-strong glow">
               Get in Touch
-            </Button>
+              </Button>
+            </a>
           </div>
 
           {/* Mobile Menu Button */}

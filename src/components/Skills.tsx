@@ -37,7 +37,7 @@ const skills = [
     { name: 'Firestore', icon: <CustomIcon src="https://icon.icepanel.io/GCP/svg/Firestore.svg" alt="Firestore" /> },
     { name: 'make.com', icon: <CustomIcon src="https://www.make.com/_next/static/media/make-logo-text-rgb.2a3b78a1.svg" alt="Make.com" /> },
     { name: 'Zapier', icon: <CustomIcon src="https://cdn.zapier.com/zapier/images/logo_zapier_black.svg" alt="Zapier" /> },
-    { name: 'n8n', icon: <CustomIcon src="src/components/n8n_pink+black_logo.png" alt="n8n" /> },
+    { name: 'n8n', icon: <CustomIcon src="/workspaces/portfolio/src/components/n8n_pink+white_logo.svg" alt="n8n" /> },
 ]
 
 function generateCircularPositions(count: number, width: number, height: number) {

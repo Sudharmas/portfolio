@@ -26,7 +26,7 @@ const skills = [
     { name: 'Langgraph', icon: <PiGraph className="text-indigo-400" /> },
     { name: 'Google ADK', icon: <CustomIcon src="src/components/agent-development-kit.png" alt="Google ADK" /> },
     { name: 'Vertex AI', icon: <CustomIcon src="/src/components/vertex-ai-logo-png_seeklogo-523075.png" alt="Vertex AI" /> },
-    { name: 'Microsoft Azure', icon: <CustomIcon src="/src/components/azure.png" alt="Azure" /> },
+    { name: 'Microsoft Azure', icon: <CustomIcon src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Microsoft_Azure.svg/240px-Microsoft_Azure.svg.png" alt="Azure" /> },
     { name: 'Databricks', icon: <SiDatabricks className="text-orange-600" /> },
     { name: 'Java', icon: <FaJava className="text-red-600" /> },
     { name: 'Flask', icon: <SiFlask className="text-gray-400" /> },
